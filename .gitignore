@@ -1,0 +1,4 @@
+/ft_printf
+/libft
+*.out
+.DS_Store
