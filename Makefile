@@ -14,8 +14,6 @@ CFLAGS = -Wall -Wextra -Werror
 headers = libft.h
 
 RM = rm -f
-COLORSTART = \033[92m
-COLOREND = \033[0m
 
 all: $(NSERVER) $(NCLIENT)
 
