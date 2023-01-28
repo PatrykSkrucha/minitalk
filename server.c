@@ -15,7 +15,7 @@ char *next_char(char *old_message, char a)
 	new_message = malloc(len + 2);
 	if(!new_message)
 	{
-		ft_printf("Malloc failed!");
+		ft_printf(">>Malloc failed! One letter is missing in a sentence<<");
 		return (old_message);
 	}
 	while(old_message[++i])
@@ -70,7 +70,6 @@ static void signal_handler(int sig)
 		a = 0;
 		i = 0;
 	}
-	//}
 }
 
 int main()
