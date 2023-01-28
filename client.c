@@ -1,14 +1,14 @@
 #include "libft/libft.h"
 #include <signal.h>
 
-void send_message(char *str, int pid)
+static void send_message(char *str, int pid)
 {
 	int	i;
 	int	j;
 
 	i = -1;
 	j = -1;
-	while(str[++i])
+	while (str[++i])
 	{
 		while (++j < 8)
 		{
@@ -17,43 +17,42 @@ void send_message(char *str, int pid)
 			else
 				kill(pid, SIGUSR2);
 			str[i] >>= 1;
-			usleep(77);
+			usleep(10);
 		}
 		j = -1;
 	}
+	i = -1;
+	while(++i < 8)
+	{
+		kill(pid, SIGUSR1);
+		usleep(10);
+	}
 }
-//void send_char(int c, int pid)
+
+//static void send_len(char *message, int pid)
 //{
-//	if (c > 1)
+//	int	len;
+//	int	i;
+
+//	len = (int)ft_strlen(message);
+//	ft_printf("len: %i", len);
+//	i = -1;
+//	while (++i < 8)
 //	{
-//		send_char(c/2, pid);
-//		send_char(c%2, pid);
-//	}
-//	else
-//	{
-//		if(c == 1)
+//		if (len & 1)
 //			kill(pid, SIGUSR1);
 //		else
 //			kill(pid, SIGUSR2);
-//		usleep(50);
+//		len >>= 1;
+//		usleep(10);
 //	}
 //}
 
 int main(int argc, char **argv)
 {
-	//(void)argc;
-	//(void)argv;
-	//int i = 254;
-	//ft_printf("I przed: %i\n", i);
-	////i >>= 2;
-	////i == i >> 2;
-	//if(i & 1)
-	//	ft_printf("0");
-	//i = i>>1;
-	////i |= 1 << 4;
-	////i == i | 1 >> 2;
-	//ft_printf("I po: %i\n", i);
+	
 	int	i;
+
 	i = -1;
 	if (argc < 3)
 	{
@@ -68,11 +67,12 @@ int main(int argc, char **argv)
 			return (1);
 		}
 	}
-	if (argc < 3)
+	if (argc > 3)
 	{
-		ft_printf("Too many arguments.");
+		ft_printf("Too many arguments. Use quotes to send a sentence");
 		return (1);
 	}
+	//send_len(argv[2], ft_atoi(argv[1]));
 	send_message(argv[2], ft_atoi(argv[1]));
 	return (0);
 }
