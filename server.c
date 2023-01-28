@@ -32,7 +32,7 @@ static void *create_message(char a)
 
 	if (control == -1)
 	{
-		ft_printf("%s", message);
+		ft_printf("%s\n", message);
 		free(message);
 		control = 0;
 		return (NULL);
@@ -44,7 +44,8 @@ static void *create_message(char a)
 			return (NULL);
 		message[0] = a;
 		message[1] = '\0';
-		control++;
+		control = 1;
+		return (NULL);
 	}
 	else
 		message = next_char(message, a);
@@ -78,7 +79,7 @@ int main()
 
 	st_sa.sa_handler = signal_handler;
 	st_sa.sa_flags = SA_RESTART;
-	ft_printf("PID: %i", getpid());
+	ft_printf("PID: %i\n", getpid());
 	sigaction(SIGUSR1, &st_sa, NULL);
 	sigaction(SIGUSR2, &st_sa, NULL);
 	while(1)
