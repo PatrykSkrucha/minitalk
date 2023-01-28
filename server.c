@@ -35,7 +35,6 @@ static void *create_message(char a)
 		ft_printf("%s\n", message);
 		free(message);
 		control = 0;
-		return (NULL);
 	}
 	else if (control == 0)
 	{
@@ -45,7 +44,6 @@ static void *create_message(char a)
 		message[0] = a;
 		message[1] = '\0';
 		control = 1;
-		return (NULL);
 	}
 	else
 		message = next_char(message, a);
