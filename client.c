@@ -1,7 +1,7 @@
 #include "libft/libft.h"
 #include <signal.h>
 
-static void send_message(char *str, int pid)
+static	void	send_message(char *str, int pid)
 {
 	int	i;
 	int	j;
@@ -22,14 +22,14 @@ static void send_message(char *str, int pid)
 		j = -1;
 	}
 	i = -1;
-	while(++i < 8)
+	while (++i < 8)
 	{
 		kill(pid, SIGUSR1);
 		usleep(10);
 	}
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	int	i;
 
