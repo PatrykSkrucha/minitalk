@@ -13,8 +13,8 @@ char	*next_char(char *old_message, char a)
 	new_message = malloc(len + 2);
 	if (!new_message)
 	{
-		ft_printf(">>Malloc failed! One letter is missing in a sentence<<");
-		return (old_message);
+		free(old_message);
+		return (NULL);
 	}
 	while (old_message[++i])
 		new_message[i] = old_message[i];
@@ -32,6 +32,11 @@ static	void	*create_message(char a)
 	{
 		ft_printf("%s\n", message);
 		free(message);
+<<<<<<< HEAD
+=======
+		control = 0;
+		return (NULL);
+>>>>>>> fe9661a1fa137c63d0f71fa545a2a9bb25a5a9cd
 	}
 	else if (!message)
 	{
@@ -40,6 +45,11 @@ static	void	*create_message(char a)
 			return (NULL);
 		message[0] = a;
 		message[1] = '\0';
+<<<<<<< HEAD
+=======
+		control = 1;
+		return (NULL);
+>>>>>>> fe9661a1fa137c63d0f71fa545a2a9bb25a5a9cd
 	}
 	else
 		message = next_char(message, a);
@@ -66,8 +76,18 @@ static	void	signal_handler(int sig)
 	}
 }
 
+<<<<<<< HEAD
 int	main(void)
+=======
+void	haha(void)
+>>>>>>> fe9661a1fa137c63d0f71fa545a2a9bb25a5a9cd
 {
+	system("leaks server");
+}
+
+int main(void)
+{
+
 	struct sigaction	st_sa;
 
 	st_sa.sa_handler = signal_handler;
@@ -75,9 +95,19 @@ int	main(void)
 	ft_printf("PID: %i\n", getpid());
 	sigaction(SIGUSR1, &st_sa, NULL);
 	sigaction(SIGUSR2, &st_sa, NULL);
+<<<<<<< HEAD
 	while (1)
 	{
 		pause();
 	}
 	return (0);
 }
+=======
+	while(1 && control != -1)
+	{
+		pause();
+	}
+	atexit(haha);
+    return 0;
+}
+>>>>>>> fe9661a1fa137c63d0f71fa545a2a9bb25a5a9cd
