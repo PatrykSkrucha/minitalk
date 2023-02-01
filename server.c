@@ -2,6 +2,8 @@
 #include <signal.h>
 #include <unistd.h>
 
+char	*message;
+
 char	*next_char(char *old_message, char a)
 {
 	char	*new_message;
@@ -14,6 +16,7 @@ char	*next_char(char *old_message, char a)
 	if (!new_message)
 	{
 		free(old_message);
+		old_message = NULL;
 		return (NULL);
 	}
 	while (old_message[++i])
@@ -21,17 +24,18 @@ char	*next_char(char *old_message, char a)
 	new_message[i] = a;
 	new_message[++i] = '\0';
 	free(old_message);
+	old_message = NULL;
 	return (new_message);
 }
 
 static	void	*create_message(char a)
 {
-	static char	*message;
 
 	if (a == -1)
 	{
 		ft_printf("%s\n", message);
 		free(message);
+		message = NULL;
 	}
 	else if (!message)
 	{
@@ -80,5 +84,7 @@ int main(void)
 	{
 		pause();
 	}
+	if(message)
+		free(message);
 	return (0);
 }
