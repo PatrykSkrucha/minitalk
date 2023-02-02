@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pskrucha <pskrucha@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/02 15:20:42 by pskrucha          #+#    #+#             */
+/*   Updated: 2023/02/02 15:55:00 by pskrucha         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft/libft.h"
 #include <signal.h>
 #include <unistd.h>
 
-char	*message;
+char	*g_message;
 
 char	*next_char(char *old_message, char a)
 {
@@ -28,25 +40,24 @@ char	*next_char(char *old_message, char a)
 	return (new_message);
 }
 
-static	void	*create_message(char a)
+static	void	*message_handler(char a)
 {
-
-	if (a == -1)
+	if (a == -1) //dopisac tu handler na zwrot sygnalu
 	{
-		ft_printf("%s\n", message);
-		free(message);
-		message = NULL;
+		ft_printf("%s\n", g_message);
+		free(g_message);
+		g_message = NULL;
 	}
-	else if (!message)
+	else if (!g_message)
 	{
-		message = malloc(2);
-		if (!message)
+		g_message = malloc(2);
+		if (!g_message)
 			return (NULL);
-		message[0] = a;
-		message[1] = '\0';
+		g_message[0] = a;
+		g_message[1] = '\0';
 	}
 	else
-		message = next_char(message, a);
+		g_message = next_char(g_message, a);
 	return (NULL);
 }
 
@@ -64,15 +75,14 @@ static	void	signal_handler(int sig)
 		i++;
 	if (i == 8)
 	{
-		create_message(a);
+		message_handler(a);
 		a = 0;
 		i = 0;
 	}
 }
 
-int main(void)
+int	main(void)
 {
-
 	struct sigaction	st_sa;
 
 	st_sa.sa_handler = signal_handler;
@@ -84,7 +94,11 @@ int main(void)
 	{
 		pause();
 	}
-	if(message)
-		free(message);
+	if (g_message)
+	{
+		free(g_message);
+		g_message = NULL;
+	}
 	return (0);
 }
+
