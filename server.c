@@ -1,6 +1,7 @@
 #include "libft/libft.h"
 #include <signal.h>
 #include <unistd.h>
+#include <stdio.h>
 
 char	*message;
 
@@ -28,12 +29,13 @@ char	*next_char(char *old_message, char a)
 	return (new_message);
 }
 
-static	void	*create_message(char a)
+static	void	*message_handler(char a, pid_t client_pid)
 {
 
 	if (a == -1)
 	{
 		ft_printf("%s\n", message);
+		kill(client_pid, SIGUSR1);
 		free(message);
 		message = NULL;
 	}
@@ -50,11 +52,13 @@ static	void	*create_message(char a)
 	return (NULL);
 }
 
-static	void	signal_handler(int sig)
+static	void	signal_handler(int sig, siginfo_t *info, void *context)
 {
-	static char	a = 0;
-	static int	i = 0;
+	static char		a = 0;
+	static int		i = 0;
+	pid_t	client_pid = 0;
 
+	(void)context;
 	if (sig == SIGUSR1)
 	{
 		a |= 1 << i;
@@ -62,9 +66,11 @@ static	void	signal_handler(int sig)
 	}
 	if (sig == SIGUSR2)
 		i++;
+	if (!client_pid)
+		client_pid = info->si_pid;
 	if (i == 8)
 	{
-		create_message(a);
+		message_handler(a, client_pid);
 		a = 0;
 		i = 0;
 	}
@@ -75,8 +81,8 @@ int main(void)
 
 	struct sigaction	st_sa;
 
-	st_sa.sa_handler = signal_handler;
-	st_sa.sa_flags = SA_RESTART;
+	st_sa.sa_sigaction = signal_handler;
+	st_sa.sa_flags = SA_SIGINFO;
 	ft_printf("PID: %i\n", getpid());
 	sigaction(SIGUSR1, &st_sa, NULL);
 	sigaction(SIGUSR2, &st_sa, NULL);
@@ -85,6 +91,9 @@ int main(void)
 		pause();
 	}
 	if(message)
+	{
 		free(message);
+		message = NULL;
+	}
 	return (0);
 }
