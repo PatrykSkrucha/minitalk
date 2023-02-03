@@ -6,7 +6,7 @@
 /*   By: pskrucha <pskrucha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 15:20:51 by pskrucha          #+#    #+#             */
-/*   Updated: 2023/02/03 18:41:21 by pskrucha         ###   ########.fr       */
+/*   Updated: 2023/02/03 18:53:26 by pskrucha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ static	void	send_message(char *str, int pid)
 		usleep(80);
 	}
 }
-
 int	main(int argc, char **argv)
 {
 	int					i;
