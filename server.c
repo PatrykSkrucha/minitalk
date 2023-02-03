@@ -40,12 +40,13 @@ char	*next_char(char *old_message, char a)
 	return (new_message);
 }
 
-static	void	*message_handler(char a)
+static	void	*message_handler(char a, __pid_t client_pid)
 {
 	if (a == -1) //dopisac tu handler na zwrot sygnalu
 	{
 		ft_printf("%s\n", g_message);
 		free(g_message);
+		kill(client_pid, SIGUSR1);
 		g_message = NULL;
 	}
 	else if (!g_message)
@@ -61,11 +62,14 @@ static	void	*message_handler(char a)
 	return (NULL);
 }
 
-static	void	signal_handler(int sig)
+static	void	signal_handler(int sig, siginfo_t *info, void *context)
 {
+	static __pid_t	client_pid = 0;
 	static char	a = 0;
 	static int	i = 0;
-
+	(void)context;
+	if (info->si_pid)
+		client_pid = info->si_pid;
 	if (sig == SIGUSR1)
 	{
 		a |= 1 << i;
@@ -75,7 +79,7 @@ static	void	signal_handler(int sig)
 		i++;
 	if (i == 8)
 	{
-		message_handler(a);
+		message_handler(a, client_pid);
 		a = 0;
 		i = 0;
 	}
@@ -85,7 +89,7 @@ int	main(void)
 {
 	struct sigaction	st_sa;
 
-	st_sa.sa_handler = signal_handler;
+	st_sa.sa_sigaction = signal_handler;
 	st_sa.sa_flags = SA_RESTART;
 	ft_printf("PID: %i\n", getpid());
 	sigaction(SIGUSR1, &st_sa, NULL);
