@@ -13,6 +13,17 @@
 #include "libft/libft.h"
 #include <signal.h>
 
+int	g_delivered = 0;
+
+static void signal_handler(int sig)
+{
+	if (sig == SIGUSR1)
+	{
+		g_delivered++;
+		ft_printf("Message delivered.");
+	}
+}
+
 static	void	send_message(char *str, int pid)
 {
 	int	i;
@@ -45,8 +56,11 @@ static	void	send_message(char *str, int pid)
 int	main(int argc, char **argv)
 {
 	int	i;
+	struct sigaction	st_sa;
 
 	i = -1;
+	st_sa.sa_handler = signal_handler;
+	st_sa.sa_flags = SA_RESTART;
 	if (argc < 3)
 	{
 		ft_printf("Too few arguments");
@@ -65,6 +79,11 @@ int	main(int argc, char **argv)
 		ft_printf("Too many arguments. Use quotes to send a sentence");
 		return (1);
 	}
+	sigaction(SIGUSR1, &st_sa, NULL);
 	send_message(argv[2], ft_atoi(argv[1]));
+	while (!g_delivered)
+	{
+
+	}
 	return (0);
 }

@@ -6,13 +6,14 @@
 /*   By: pskrucha <pskrucha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 15:20:42 by pskrucha          #+#    #+#             */
-/*   Updated: 2023/02/02 15:55:00 by pskrucha         ###   ########.fr       */
+/*   Updated: 2023/02/03 18:14:07 by pskrucha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
 #include <signal.h>
 #include <unistd.h>
+#include <stdio.h>
 
 char	*g_message;
 
@@ -40,13 +41,13 @@ char	*next_char(char *old_message, char a)
 	return (new_message);
 }
 
-static	void	*message_handler(char a)
+static	void	*create_message(char a)
 {
 	if (a == -1) //dopisac tu handler na zwrot sygnalu
 	{
-		ft_printf("%s\n", g_message);
-		free(g_message);
-		g_message = NULL;
+		ft_printf("%s\n", message);
+		free(message);
+		message = NULL;
 	}
 	else if (!g_message)
 	{
@@ -61,11 +62,13 @@ static	void	*message_handler(char a)
 	return (NULL);
 }
 
-static	void	signal_handler(int sig)
+static	void	signal_handler(int sig, siginfo_t *info, void *context)
 {
-	static char	a = 0;
-	static int	i = 0;
+	static char		a = 0;
+	static int		i = 0;
+	pid_t	client_pid = 0;
 
+	(void)context;
 	if (sig == SIGUSR1)
 	{
 		a |= 1 << i;
@@ -73,9 +76,11 @@ static	void	signal_handler(int sig)
 	}
 	if (sig == SIGUSR2)
 		i++;
+	if (!client_pid)
+		client_pid = info->si_pid;
 	if (i == 8)
 	{
-		message_handler(a);
+		create_message(a);
 		a = 0;
 		i = 0;
 	}
@@ -85,8 +90,8 @@ int	main(void)
 {
 	struct sigaction	st_sa;
 
-	st_sa.sa_handler = signal_handler;
-	st_sa.sa_flags = SA_RESTART;
+	st_sa.sa_sigaction = signal_handler;
+	st_sa.sa_flags = SA_SIGINFO;
 	ft_printf("PID: %i\n", getpid());
 	sigaction(SIGUSR1, &st_sa, NULL);
 	sigaction(SIGUSR2, &st_sa, NULL);
@@ -94,11 +99,8 @@ int	main(void)
 	{
 		pause();
 	}
-	if (g_message)
-	{
-		free(g_message);
-		g_message = NULL;
-	}
+	if(message)
+		free(message);
 	return (0);
 }
 
