@@ -6,7 +6,7 @@
 /*   By: pskrucha <pskrucha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 15:20:42 by pskrucha          #+#    #+#             */
-/*   Updated: 2023/02/03 18:14:07 by pskrucha         ###   ########.fr       */
+/*   Updated: 2023/02/03 18:16:58 by pskrucha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ static	void	*create_message(char a)
 {
 	if (a == -1) //dopisac tu handler na zwrot sygnalu
 	{
-		ft_printf("%s\n", message);
-		free(message);
-		message = NULL;
+		ft_printf("%s\n", g_message);
+		free(g_message);
+		g_message = NULL;
 	}
 	else if (!g_message)
 	{
@@ -99,8 +99,11 @@ int	main(void)
 	{
 		pause();
 	}
-	if(message)
-		free(message);
+	if(g_message)
+	{
+		free(g_message);
+		g_message = NULL;
+	}
 	return (0);
 }
 
