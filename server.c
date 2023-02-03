@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pskrucha <pskrucha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/02 15:20:42 by pskrucha          #+#    #+#             */
-/*   Updated: 2023/02/03 18:16:58 by pskrucha         ###   ########.fr       */
+/*   Created: 2023/02/03 18:18:31 by pskrucha          #+#    #+#             */
+/*   Updated: 2023/02/03 18:48:29 by pskrucha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,12 @@ char	*next_char(char *old_message, char a)
 	return (new_message);
 }
 
-static	void	*create_message(char a)
+static	void	*message_handler(char a, pid_t client_pid)
 {
-	if (a == -1) //dopisac tu handler na zwrot sygnalu
+	if (a == -1)
 	{
 		ft_printf("%s\n", g_message);
+		kill(client_pid, SIGUSR1);
 		free(g_message);
 		g_message = NULL;
 	}
@@ -66,8 +67,9 @@ static	void	signal_handler(int sig, siginfo_t *info, void *context)
 {
 	static char		a = 0;
 	static int		i = 0;
-	pid_t	client_pid = 0;
+	pid_t			client_pid;
 
+	client_pid = 0;
 	(void)context;
 	if (sig == SIGUSR1)
 	{
@@ -80,7 +82,7 @@ static	void	signal_handler(int sig, siginfo_t *info, void *context)
 		client_pid = info->si_pid;
 	if (i == 8)
 	{
-		create_message(a);
+		message_handler(a, client_pid);
 		a = 0;
 		i = 0;
 	}
@@ -99,11 +101,10 @@ int	main(void)
 	{
 		pause();
 	}
-	if(g_message)
+	if (g_message)
 	{
 		free(g_message);
 		g_message = NULL;
 	}
 	return (0);
 }
-

@@ -6,7 +6,7 @@
 /*   By: pskrucha <pskrucha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 15:20:51 by pskrucha          #+#    #+#             */
-/*   Updated: 2023/02/02 15:54:57 by pskrucha         ###   ########.fr       */
+/*   Updated: 2023/02/03 18:41:21 by pskrucha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,13 @@
 
 int	g_delivered = 0;
 
-static void signal_handler(int sig)
+static void	signal_handler(int sig)
 {
 	if (sig == SIGUSR1)
 	{
 		g_delivered++;
 		ft_printf("Message delivered.");
+		exit(1);
 	}
 }
 
@@ -52,15 +53,11 @@ static	void	send_message(char *str, int pid)
 	}
 }
 
-//zaimplementowac handler z servera
 int	main(int argc, char **argv)
 {
-	int	i;
-	struct sigaction	st_sa;
+	int					i;
 
 	i = -1;
-	st_sa.sa_handler = signal_handler;
-	st_sa.sa_flags = SA_RESTART;
 	if (argc < 3)
 	{
 		ft_printf("Too few arguments");
@@ -68,22 +65,17 @@ int	main(int argc, char **argv)
 	}
 	while (argv[1][++i])
 	{
-		if (argv[1][i] < 48 || argv[1][i] > 57) //spr na longa i spr -1 z killa co zwraca
+		if (argv[1][i] < 48 || argv[1][i] > 57)
 		{
 			ft_printf("Incorrect PID.");
 			return (1);
 		}
 	}
-	if (argc > 3)
-	{
-		ft_printf("Too many arguments. Use quotes to send a sentence");
-		return (1);
-	}
-	sigaction(SIGUSR1, &st_sa, NULL);
+	signal(SIGUSR1, signal_handler);
 	send_message(argv[2], ft_atoi(argv[1]));
 	while (!g_delivered)
 	{
-
+		pause();
 	}
 	return (0);
 }
