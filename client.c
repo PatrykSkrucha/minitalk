@@ -6,7 +6,7 @@
 /*   By: pskrucha <pskrucha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 15:20:51 by pskrucha          #+#    #+#             */
-/*   Updated: 2023/02/09 12:56:36 by pskrucha         ###   ########.fr       */
+/*   Updated: 2023/02/09 14:18:01 by pskrucha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	main(int argc, char **argv)
 
 	i = -1;
 	if ((argc < 3 && ft_printf("Too few arguments"))
-		|| (argc > 3 && ft_printf("Use apostrophe to pass a sentence.")))
+		|| (argc > 3 && ft_printf("Use apostrophes to submit a sentence.")))
 		return (1);
 	while (argv[1][++i])
 	{
