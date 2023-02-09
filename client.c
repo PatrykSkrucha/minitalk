@@ -6,7 +6,7 @@
 /*   By: pskrucha <pskrucha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 15:20:51 by pskrucha          #+#    #+#             */
-/*   Updated: 2023/02/09 12:30:08 by pskrucha         ###   ########.fr       */
+/*   Updated: 2023/02/09 12:56:36 by pskrucha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,12 @@ int	main(int argc, char **argv)
 	int					i;
 
 	i = -1;
-	if (argc < 3)
-	{
-		ft_printf("Too few arguments");
+	if ((argc < 3 && ft_printf("Too few arguments"))
+		|| (argc > 3 && ft_printf("Use apostrophe to pass a sentence.")))
 		return (1);
-	}
 	while (argv[1][++i])
 	{
-		if (argv[1][i] < 48 || argv[1][i] > 57)
+		if (argv[1][i] < 48 || argv[1][i] > 57 || argv[1][0] == '0')
 		{
 			ft_printf("Incorrect PID.");
 			return (1);
