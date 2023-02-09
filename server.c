@@ -6,7 +6,7 @@
 /*   By: pskrucha <pskrucha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 18:18:31 by pskrucha          #+#    #+#             */
-/*   Updated: 2023/02/03 18:48:29 by pskrucha         ###   ########.fr       */
+/*   Updated: 2023/02/09 12:28:19 by pskrucha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ static	void	*message_handler(char a, pid_t client_pid)
 		ft_printf("%s\n", g_message);
 		kill(client_pid, SIGUSR1);
 		free(g_message);
-		kill(client_pid, SIGUSR1);
 		g_message = NULL;
 	}
 	else if (!g_message)
