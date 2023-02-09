@@ -6,7 +6,7 @@
 /*   By: pskrucha <pskrucha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 18:18:31 by pskrucha          #+#    #+#             */
-/*   Updated: 2023/02/09 12:28:19 by pskrucha         ###   ########.fr       */
+/*   Updated: 2023/02/09 15:08:27 by pskrucha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,7 @@ int	main(void)
 	sigaction(SIGUSR1, &st_sa, NULL);
 	sigaction(SIGUSR2, &st_sa, NULL);
 	while (1)
-	{
 		pause();
-	}
 	if (g_message)
 	{
 		free(g_message);

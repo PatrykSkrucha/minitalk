@@ -6,20 +6,17 @@
 /*   By: pskrucha <pskrucha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 15:20:51 by pskrucha          #+#    #+#             */
-/*   Updated: 2023/02/09 14:18:01 by pskrucha         ###   ########.fr       */
+/*   Updated: 2023/02/09 15:07:53 by pskrucha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
 #include <signal.h>
 
-int	g_delivered = 0;
-
 static void	signal_handler(int sig)
 {
 	if (sig == SIGUSR1)
 	{
-		g_delivered++;
 		ft_printf("Message delivered.");
 		exit(1);
 	}
@@ -71,9 +68,7 @@ int	main(int argc, char **argv)
 	}
 	signal(SIGUSR1, signal_handler);
 	send_message(argv[2], ft_atoi(argv[1]));
-	while (!g_delivered)
-	{
+	while (1)
 		pause();
-	}
 	return (0);
 }
