@@ -18,7 +18,7 @@ static void	signal_handler(int sig)
 	if (sig == SIGUSR1)
 	{
 		ft_printf("Message delivered.");
-		exit(1);
+		exit(0);
 	}
 }
 
